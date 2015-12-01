@@ -1,0 +1,24 @@
+{
+  "name": "jspa",
+  "version": "0.1.0",
+  "author": {
+    "name": "helinjiang",
+    "email": "me@helinjiang.com",
+    "url": "http://www.helinjiang.com"
+  },
+  "devDependencies": {
+    "connect-livereload": "^0.5.3",
+    "grunt": "^0.4.5",
+    "grunt-contrib-clean": "^0.7.0",
+    "grunt-contrib-concat": "^0.5.1",
+    "grunt-contrib-connect": "^0.11.0",
+    "grunt-contrib-copy": "^0.8.2",
+    "grunt-contrib-jshint": "^0.11.2",
+    "grunt-contrib-uglify": "^0.9.1",
+    "grunt-contrib-watch": "~0.6.1",
+    "grunt-file-modify": "^0.2.1",
+    "grunt-htmlstamp": "^1.2.1",
+    "load-grunt-tasks": "^3.3.0",
+    "time-grunt": "^1.2.2"
+  }
+}

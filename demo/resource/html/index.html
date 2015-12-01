@@ -1,0 +1,65 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="author" content="linjianghe">
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <link rel="shortcut icon" type="image/ico" href="http://3gimg.qq.com/web/webapp_webmarket/android/images/favicon.ico">
+    <link rel="apple-touch-icon-precomposed" href="http://qzonestyle.gtimg.cn/open/mobile/myapp_touch/img/logo-114.png">
+    <title>jSpa，轻量级单页应用框架</title>
+    <script type="text/javascript">
+    window.console && console.log("cur=" + location.href);
+    </script>
+    <style type="text/css">
+    *[data-defpageid] {
+        display: none;
+    }
+    
+    *[data-defpageid].active {
+        display: block;
+    }
+    </style>
+</head>
+
+<body>
+    <p><a href="javascript:void(0);" data-nav="index">首页</a></p>
+    <p><a href="javascript:void(0);" data-nav="detail">detail页面</a></p>
+    <p><a href="javascript:void(0);" data-nav="detail(key1,key2)" data-key1="1key1" data-key2="2key2">detail页面，附加参数</a></p>
+    <hr>
+    <div data-defpageid="index" data-switch="PAGEINDEX.switch" data-active="PAGEINDEX.active">
+        <h1>首页</h1>
+        <p><a href="javascript:void(0);" data-click="EVENT.testClick">测试点击事件</a></p>
+        <p><a href="javascript:void(0);" data-click="EVENT.testClick EVENT.testClick2">测试点击事件（两个）</a></p>
+        <div class="jinfo"></div>
+    </div>
+    <div data-defpageid="detail" data-switch="PAGEDETAIL.switch">
+        <h1>detail页面</h1>
+        <p><a class="btn btn-success" href="javascript:void(0);" data-click="EVENT.back">返回</a></p>
+        <div class="jresult"></div>
+    </div>
+    <div data-defpageid="p404">
+        <h1>p404页面</h1>
+        <p><a class="btn btn-success" href="javascript:void(0);" data-click="EVENT.back">返回</a></p>
+        <p>本页面用于测试p404操作</p>        
+    </div>
+
+
+    <script type="text/javascript" src="./jspa/jspa-fastclick.js"></script>
+    <script type="text/javascript" src="./js/lib/zepto.min.js"></script>
+    <script type="text/javascript" src="./js/core/util.js"></script>
+    <script type="text/javascript" src="./js/core/util-jspa.js"></script>
+    <script type="text/javascript" src="./js/core/event.js"></script>
+    <script type="text/javascript" src="./js/page/index.js"></script>
+    <script type="text/javascript" src="./js/page/detail.js"></script>
+
+    <script type="text/javascript">
+        UTIL.initjSpa();
+    </script>
+</body>
+
+</html>
