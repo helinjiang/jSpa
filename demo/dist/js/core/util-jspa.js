@@ -34,7 +34,7 @@
             elem = container[0];
         }
 
-        jSpa.lib.setHtml(elem, html, append, triggerActive);
+        jSpa.setHtml(elem, html, append, triggerActive);
     };
 
     /**
@@ -44,8 +44,7 @@
      * @date   2015-09-18
      */
     UTIL.initjSpa = function() {
-        // jSpa.lib.renderPage(CONFIG.getjSpaConfig());
-        jSpa.lib.renderPage({
+        jSpa.render({
             //默认的页面ID，如果没有#id这样的参数的话
             pageDefaultId: 'index',
 
@@ -70,7 +69,7 @@
      * @date   2015-09-18
      */
     UTIL.go = function(pageName) {
-        jSpa.lib.goToPage(pageName);
+        jSpa.goToPage(pageName);
     };
 
     /**

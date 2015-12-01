@@ -56,6 +56,8 @@ $("[data-defpageid]").forEach(function(elem, index) {
 });
 
 return {
-    lib: LIB,
+    render: LIB.renderPage,
+    goToPage: LIB.goToPage,
+    setHtml: LIB.setHtml,
     Page: Page
 };

@@ -2060,35 +2060,37 @@ window.on("hashchange", function(e) {
  * @author linjianghe
  * @date   2015-07-15
  */
-var LIB = (function () {
+var LIB = (function() {
 
     function renderPage(options) {
-        var isSetDefault = false;
+        if (typeof options === "object") {
+            var isSetDefault = false;
 
-        //设置默认页面
-        if (typeof options.pageDefaultId === "string") {
-            TINYSPA.setPageDefaultId(options.pageDefaultId);
-            isSetDefault = true;
+            //设置默认页面
+            if (typeof options.pageDefaultId === "string") {
+                TINYSPA.setPageDefaultId(options.pageDefaultId);
+                isSetDefault = true;
+            }
+
+            //设置404页面
+            if (typeof options.page404Id === "string") {
+                TINYSPA.setPage404Id(options.page404Id);
+            } else if (isSetDefault) {
+                TINYSPA.setPage404Id(options.pageDefaultId);
+            }
+
+            //设置beforeLoad
+            if (typeof options.beforeLoad === "function") {
+                TINYSPA.setBeforeLoad(options.beforeLoad);
+            }
+
+            //设置afterLoad
+            if (typeof options.afterLoad === "function") {
+                TINYSPA.setAfterLoad(options.afterLoad);
+            }
         }
 
-        //设置404页面
-        if (typeof options.page404Id === "string") {
-            TINYSPA.setPage404Id(options.page404Id);
-        } else if (isSetDefault) {
-            TINYSPA.setPage404Id(options.pageDefaultId);
-        }
-
-        //设置beforeLoad
-        if (typeof options.beforeLoad === "function") {
-            TINYSPA.setBeforeLoad(options.beforeLoad);
-        }
-
-        //设置afterLoad
-        if (typeof options.afterLoad === "function") {
-            TINYSPA.setAfterLoad(options.afterLoad);
-        }
-
-        // EVENT.trigger(window, "hashchange",{"test32":"33333333"});
+        // TODO EVENT.trigger(window, "hashchange",{"test32":"33333333"});
         TINYSPA.render();
     }
 
@@ -2105,7 +2107,8 @@ var LIB = (function () {
         goToPage: goToPage,
         setHtml: setHtml
     };
-})();;/**
+})();
+;/**
  * 做一些基本的初始化工作
  *
  * @author linjianghe
@@ -2163,7 +2166,9 @@ $("[data-defpageid]").forEach(function(elem, index) {
 });
 
 return {
-    lib: LIB,
+    render: LIB.renderPage,
+    goToPage: LIB.goToPage,
+    setHtml: LIB.setHtml,
     Page: Page
 };
 })(window);
