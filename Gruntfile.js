@@ -60,7 +60,7 @@ module.exports = function (grunt) {
                     '<%=banner%>',
                     'var jSpa = (function(window, undefined) {'
                 ].join("\n"),
-                footer: '\n})(window);'
+                footer: ';return LIB;\n})(window);'
             },
             jspa: {
                 files: {
@@ -72,8 +72,7 @@ module.exports = function (grunt) {
                         '<%=resourcePath%>core/base.js',
                         '<%=resourcePath%>core/page.js',
                         '<%=resourcePath%>core/app.js',
-                        '<%=resourcePath%>core/lib.js',
-                        '<%=resourcePath%>core/init.js'
+                        '<%=resourcePath%>core/lib.js'
                     ]
                 }
             },
@@ -88,8 +87,7 @@ module.exports = function (grunt) {
                         '<%=resourcePath%>core/base.js',
                         '<%=resourcePath%>core/page.js',
                         '<%=resourcePath%>core/app.js',
-                        '<%=resourcePath%>core/lib.js',
-                        '<%=resourcePath%>core/init.js'
+                        '<%=resourcePath%>core/lib.js'
                     ]
                 }
             }
@@ -113,6 +111,12 @@ module.exports = function (grunt) {
             main: [
                 '<%=resourcePath%>core/*.js'
             ]
+        },
+
+        "jsbeautifier": {
+            "default": {
+                src: ["<%=distPath%>/*.js"]
+            }
         },
 
         // 通过connect任务，创建一个静态服务器
@@ -197,7 +201,7 @@ module.exports = function (grunt) {
     grunt.registerTask('live', ['connect', 'watch']);
 
     // 构建开发版本，也是合入svn的版本
-    grunt.registerTask('dev', ['clean', 'concat', 'copy:jsToDemo', 'copy:demoJs', 'copy:demoHtml', 'htmlstamp:dev']);
+    grunt.registerTask('dev', ['clean', 'concat', 'jsbeautifier', 'copy:jsToDemo', 'copy:demoJs', 'copy:demoHtml', 'htmlstamp:dev']);
 
     //不压缩，且开启文件变动检测自动编译
     grunt.registerTask('default', ['dev', 'live']);

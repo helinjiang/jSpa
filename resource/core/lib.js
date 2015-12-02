@@ -1,12 +1,11 @@
 /**
- * jWap对外暴露的一些公用函数
+ * jSpa对外暴露的一些公用函数
  *
- * @author linjianghe
- * @date   2015-07-15
+ * @author helinjiang
+ * @date   2015-11-30
  */
-var LIB = (function() {
-
-    function renderPage(options) {
+var LIB = (function (Page) {
+    function render(options) {
         if (typeof options === "object") {
             var isSetDefault = false;
 
@@ -34,21 +33,13 @@ var LIB = (function() {
             }
         }
 
-        // TODO EVENT.trigger(window, "hashchange",{"test32":"33333333"});
         TINYSPA.render();
     }
 
-    function goToPage(pageId, param) {
-        TINYSPA.goToPage(pageId, param);
-    }
-
-    function setHtml(container, html, append, triggerActive) {
-        TINYSPA.setHtml(container, html, append, triggerActive);
-    }
-
     return {
-        renderPage: renderPage,
-        goToPage: goToPage,
-        setHtml: setHtml
+        render: render,
+        goToPage: TINYSPA.goToPage,
+        setHtml: TINYSPA.setHtml,
+        Page: Page
     };
-})();
+})(Page);

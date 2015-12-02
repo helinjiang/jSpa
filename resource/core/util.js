@@ -1,8 +1,8 @@
 /**
  * 工具库
  *
- * @author linjianghe
- * @date   2015-07-15
+ * @author helinjiang
+ * @date   2015-11-30
  */
 var UTIL = (function () {
     var _reClassToken = /\s+/;

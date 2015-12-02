@@ -18,6 +18,7 @@
     "grunt-contrib-watch": "~0.6.1",
     "grunt-file-modify": "^0.2.1",
     "grunt-htmlstamp": "^1.2.1",
+    "grunt-jsbeautifier": "^0.2.10",
     "load-grunt-tasks": "^3.3.0",
     "time-grunt": "^1.2.2"
   }

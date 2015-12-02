@@ -30,6 +30,9 @@ jSpa框架不依赖任何其他的框架，它是属于轻量级的框架。但�
 
 ```
 
+### DOM
+在要模拟的DOM元素上，增加属性 `data-defpageid` ，则相对于定义了一个虚拟页面，该属性的值就是这个页面的页面ID，用于在hash中进行定位。
+
 ### click 事件
 在dom中增加 `data-click` 属性即可定义一个 click 点击事件，其中属性值就是执行的函数方法名，因此请确保其真实存在，且为全局方法，否则，该dom将不做任何处理。
 
@@ -188,7 +191,7 @@ Type: `Function(container, html, append, triggerActive)`
 ## 测试用例
 
 ### 路由切换
-使用`new jWap.Page(pageId)`命令创建一个页面：
+使用`new jSpa.Page(pageId)`命令创建一个页面：
 
 1. 设置pageObj.initPage方法，也可以不设置，但推荐设置，可以在此函数中处理初始化的事情，比如获取首次加载之后的dom元素、url中的参数等
 2. 增加对外使用的switchDo函数，在其中调用pageObj.triggerSwitch方法，并在为该方法传递回调函数

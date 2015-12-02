@@ -1,19 +1,18 @@
 /**
- * 初始化一些事件、行为等
+ * 初始化jSpa框架的一些事件、行为等
  *
- * @author linjianghe
- * @date   2015-11-26
+ * @author helinjiang
+ * @date   2015-11-30
  */
 
-var _t;
 
 /**
- * 绑定click事件
+ * 绑定click事件，绑定到window对象上，通过e.target来确定当前的对象
  * @param  {String}   事件类型
  * @return {Function}      执行函数
  */
 window.on("click", function (e) {
-    console.debug("[jspa][event.js] event happend : click", e.target); //@debug
+    console.debug("[jspa][app.js] event happend : click", e.target); //@debug
     var target = e.target,
         clickFn,
         navTo,
@@ -74,15 +73,16 @@ window.on("click", function (e) {
  * @return {Function}      执行函数
  */
 window.on("switch", function (e) {
-    console.debug("[jspa][event.js] event happend : switch"); //@debug
+    console.debug("[jspa][app.js] event happend : switch"); //@debug
     var target = e.target,
         action = UTIL.getDomData(target, "switch");
 
+    // TODO 此处的写法还有待优化，实际上可以将action传递过去的。而且switch和e.type什么关系，是一样的吗？
     if (action) {
         TINYSPA.addEventAction(target, e);
     }
 
-    //TODO 触发switchbegin事件，用于显示加载中
+    //TODO 可考虑广播jspa-switch事件，当业务端可以接受到这个事件，然后再处理之，比如用于显示加载中
 });
 
 /**
@@ -91,22 +91,25 @@ window.on("switch", function (e) {
  * @return {Function}      执行函数
  */
 window.on("active", function (e) {
-    console.debug("[jspa][event.js] event happend : active"); //@debug
+    console.debug("[jspa][app.js] event happend : active"); //@debug
 
-    var target = e.target;
-    if (target) {
+    var target = e.target,
+        action = UTIL.getDomData(target, "active");
+
+    if (action) {
         TINYSPA.addEventAction(target, e);
     }
 });
 
 /**
- * 绑定scriptload事件
+ * 绑定scriptload事件，再处理之前执行失败的事件。因为导致这些事件执行失败的原因有可能是因为js还没加载完毕
  * @param  {String}   事件类型
  * @return {Function}      执行函数
  */
 window.on("scriptload", function (e) {
-    console.debug("[jspa][event.js] event happend : scriptload"); //@debug
+    console.debug("[jspa][app.js] event happend : scriptload"); //@debug
 
+    //加个等待时间, 等待js代码加载完毕.
     setTimeout(function () {
         for (var i = 0, m = TINYSPA.queueEvent.length; i < m; ++i) {
             var obj = TINYSPA.queueEvent[i];
@@ -117,14 +120,16 @@ window.on("scriptload", function (e) {
         }
         //TODO 判断是否在视野中显示
         INVIEW.handle(e);
-    }, 50); //加个等待时间, 等待js代码加载完毕.
+    }, 50);
 });
 
-//绑定这些事件，它们触发时动作都一样的
+//绑定这些事件，它们触发时动作都一样的，因此使用循环赋值方式
 (function () {
-    var events = ["scroll", "resize", "onorientationchange", "domchange"];
+    var events = ["scroll", "resize", "onorientationchange", "domchange"],
+        _t;
+
     var fn = function (e) {
-        console.debug("[jspa][event.js] event happend : " + e.type); //@debug
+        console.debug("[jspa][app.js] event happend : " + e.type); //@debug
         if (_t) {
             clearTimeout(_t);
         }
@@ -133,6 +138,7 @@ window.on("scriptload", function (e) {
             INVIEW.handle(e);
         }, 320);
     };
+
     for (var i = 0, length = events.length; i < length; i++) {
         window.on(events[i], fn);
     }
@@ -144,7 +150,7 @@ window.on("scriptload", function (e) {
  * @return {Function}      执行函数
  */
 window.on("viewchange", function (e) {
-    console.debug("[jspa][event.js] event happend : viewchange"); //@debug
+    console.debug("[jspa][app.js] event happend : viewchange"); //@debug
     INVIEW.handle(e);
 });
 
@@ -154,7 +160,7 @@ window.on("viewchange", function (e) {
  * @return {Function}      执行函数
  */
 window.on("load", function (e) {
-    console.debug("[jspa][event.js] event happend : load"); //@debug
+    console.debug("[jspa][app.js] event happend : load"); //@debug
     // 引用FastClick以便解决点击穿透与延迟的问题
     // 只有引入了FastClick再处理
     if (FastClick) {
@@ -174,9 +180,10 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-//全局绑定hashchange事件
+// 全局绑定hashchange事件
+// TODO 这一块对history的模拟操作好像有问题
 window.on("hashchange", function(e) {
-    console.log("[jwap][navigate.js] hash QUEUE:", JSON.stringify(TINYSPA.queueHistory), history.length); //@debug
+    console.log("[jspa][app.js] hash QUEUE:", JSON.stringify(TINYSPA.queueHistory), history.length); //@debug
 
     var len = TINYSPA.queueHistory.length,
         curHash = location.hash,
@@ -189,12 +196,12 @@ window.on("hashchange", function(e) {
         if (lastSecond.hash === curHash) {
             // 如果队列中倒数第二个就是本页，则模拟“后退”，
             // 比如跳转之前是[index,detail]，hashchange之后到了index，则此时应该是[index]而不是[index,detail,index]
-            console.debug("[jwap][navigate.js] hashchange happend! Equal to history.back()"); //@debug
+            console.debug("[jspa][app.js] hashchange happend! Equal to history.back()"); //@debug
             TINYSPA.queueHistory.pop();
             len--;
 
             TINYSPA.currScrollY = lastSecond.scrollY || 1;
-            console.log("[jwap][navigate.js] hash QUEUE after history.back():", JSON.stringify(TINYSPA.queueHistory)); //@debug
+            console.log("[jspa][app.js] hash QUEUE after history.back():", JSON.stringify(TINYSPA.queueHistory)); //@debug
         }
     }
 
@@ -203,26 +210,26 @@ window.on("hashchange", function(e) {
         last = TINYSPA.queueHistory[len - 1];
 
         if (last.hash !== curHash) {
-            console.log("[jwap][navigate.js] add in QUEUE before:", JSON.stringify(TINYSPA.queueHistory)); //@debug
+            console.log("[jspa][app.js] add in QUEUE before:", JSON.stringify(TINYSPA.queueHistory)); //@debug
             // 如果不是当前页面，则增加历史记录，且设置滚动条位置
             TINYSPA.queueHistory.push({
                 hash: curHash,
                 scrollY: window.scrollY
             });
-            console.log("[jwap][navigate.js] add in QUEUE after:", JSON.stringify(TINYSPA.queueHistory)); //@debug
+            console.log("[jspa][app.js] add in QUEUE after:", JSON.stringify(TINYSPA.queueHistory)); //@debug
         } else {
             //找到当前的页面，则要设置滚动条位置
-            console.log("[jwap][navigate.js] Exist in QUEUE scrollY:", JSON.stringify(last)); //@debug
+            console.log("[jspa][app.js] Exist in QUEUE scrollY:", JSON.stringify(last)); //@debug
             TINYSPA.currScrollY = last.scrollY || 1;
         }
     } else {
-        console.log("[jwap][navigate.js] QUEUE is EMPTY", JSON.stringify(TINYSPA.queueHistory)); //@debug
+        console.log("[jspa][app.js] QUEUE is EMPTY", JSON.stringify(TINYSPA.queueHistory)); //@debug
         // 如果队列为空，则增加一条记录
         TINYSPA.queueHistory.push({
             hash: curHash,
             scrollY: window.scrollY
         });
-        console.log("[jwap][navigate.js] add first one in QUEUE ", JSON.stringify(TINYSPA.queueHistory)); //@debug
+        console.log("[jspa][app.js] add first one in QUEUE ", JSON.stringify(TINYSPA.queueHistory)); //@debug
     }
 
     if (!TINYSPA.urlFrom) {
@@ -233,7 +240,7 @@ window.on("hashchange", function(e) {
         TINYSPA.urlCur = curHash;
     }
 
-    console.log("[jwap][navigate.js] urlFrom,urlCur:", TINYSPA.urlFrom, TINYSPA.urlCur); //@debug
+    console.log("[jspa][app.js] urlFrom,urlCur:", TINYSPA.urlFrom, TINYSPA.urlCur); //@debug
 
 
 
@@ -245,4 +252,19 @@ window.on("hashchange", function(e) {
         "urlFrom": TINYSPA.urlFrom,
         "urlCur": TINYSPA.urlCur
     });
+});
+
+// TODO 要处理?channel=77777#id=index情况
+/**
+ * 自动将data-defpageid的加入page中，自动生存ID
+ */
+$("[data-defpageid]").forEach(function(elem, index) {
+
+    var pageId = UTIL.getDomData(elem, "defpageid");
+
+    //增加ID以便后续操作
+    elem.setAttribute("id", pageId);
+
+    //将其增加到页面数组中
+    TINYSPA.addPage(pageId); //页面ID
 });

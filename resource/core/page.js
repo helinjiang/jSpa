@@ -1,8 +1,8 @@
 /**
  * 页面处理类
  *
- * @author linjianghe
- * @date   2015-07-15
+ * @author helinjiang
+ * @date   2015-11-30
  */
 var Page = (function(TINYSPA) {
 
@@ -21,7 +21,7 @@ var Page = (function(TINYSPA) {
          * @date   2015-08-06
          */
         this.init = function() {
-            console.debug("[jwap][page.js][this.init] pageName=" + this.pageName); //@debug
+            console.debug("[jspa][page.js][this.init] pageName=" + this.pageName); //@debug
         };
     }
 
@@ -31,7 +31,7 @@ var Page = (function(TINYSPA) {
      * @date   2015-08-31
      */
     Page.prototype.getContainer = function() {
-        console.debug("[jwap][page.js][Page.prototype.getContainer] ", this); //@debug
+        console.debug("[jspa][page.js][Page.prototype.getContainer] ", this); //@debug
 
         if (!this.container) {
             this.container = $('[data-defpageid="' + this.pageName + '"]');
@@ -47,7 +47,7 @@ var Page = (function(TINYSPA) {
      * @date   2015-08-06
      */
     Page.prototype.initPage = function(callback) {
-        console.debug("[jwap][page.js][Page.prototype.initPage] ", this); //@debug
+        console.debug("[jspa][page.js][Page.prototype.initPage] ", this); //@debug
 
         if (_isFunction(callback)) {
             this.init = callback;
@@ -61,7 +61,7 @@ var Page = (function(TINYSPA) {
      * @date   2015-08-06
      */
     Page.prototype.triggerSwitch = function(callback) {
-        console.debug("[jwap][page.js][Page.prototype.triggerSwitch] ", this); //@debug
+        console.debug("[jspa][page.js][Page.prototype.triggerSwitch] ", this); //@debug
         var curPageContainer = this.getContainer();
 
         //此处控制首次加载页面时，某些元素是否要重复加载，如果不需要重复加载的则在此处进行处理
@@ -90,7 +90,7 @@ var Page = (function(TINYSPA) {
      * @date   2015-08-06
      */
     Page.prototype.triggerActive = function(callback) {
-        console.debug("[jwap][page.js][Page.prototype.triggerActive] ", this); //@debug
+        console.debug("[jspa][page.js][Page.prototype.triggerActive] ", this); //@debug
 
         //切换函数
         if (_isFunction(callback)) {
@@ -119,7 +119,7 @@ var Page = (function(TINYSPA) {
      * @date   2015-08-10
      */
     Page.prototype.getParam = function(includeSearchParam) {
-        console.debug("[jwap][page.js][Page.prototype.getParam] ", includeSearchParam, this); //@debug
+        console.debug("[jspa][page.js][Page.prototype.getParam] ", includeSearchParam, this); //@debug
         var defaultResult = TINYSPA.getHashKV();
         if (!includeSearchParam) {
             return defaultResult;

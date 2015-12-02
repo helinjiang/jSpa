@@ -1,7 +1,7 @@
 /**
  * 注意，此文件稍微做了点修改，官网下载原版地址为：https://github.com/ftlabs/fastclick
- * @author linjianghe
- * @date   2015-08-28
+ * @author helinjiang
+ * @date   2015-11-30
  */
 var FastClick = (function () {
     'use strict';
