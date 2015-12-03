@@ -171,27 +171,42 @@ Type: `Function(container, html, append, triggerActive)`
 ### jSpa.Page
 “模拟页面”的对象，所有“模拟页面”都继承这个来操作。
 
-#### initPage(callback) 
+#### jSpa.Page.prototype.initPage
+Type: `Function(callback)`
+
 “模拟页面”初始化时执行，只执行一次，并执行回调。
 
-#### triggerSwitch(callback) 
+#### jSpa.Page.prototype.triggerSwitch
+Type: `Function(callback)`
+
 触发“模拟页面”的switch事件，并执行回调。
 
-#### activeSwitch(callback) 
+#### jSpa.Page.prototype.activeSwitch
+Type: `Function(callback)`
+
 触发“模拟页面”的active事件，并执行回调。
 
-#### getPageName() 
+#### jSpa.Page.prototype.getPageName
+Type: `Function()`
+
 获得“模拟页面”的名字
 
-#### getPageContainer() 
+#### jSpa.Page.prototype.getPageContainer
+Type: `Function()`
+
 获得“模拟页面”的最外层DOM元素
 
-#### getPageParam() 
+#### jSpa.Page.prototype.getPageParam
+Type: `Function(includeSearchParam)`
+
 获得“模拟页面”的URL上的请求参数，注意请每次都重新获取该参数值，因为同一个页面可能请求参数不一样，比如详情页，还会传递不同id等参数。
 
+- `includeSearchParam`:boolean值，true表示将会把 `?` 后面的参数值也包含进来。例如 `http://localhost:8000/?channel=111&t=1#detail&key1=1key1&key2=2key2` 这种场景下，如果该值为true，则将获得 `{"key1":"1key1","key2":"2key2","channel":"111","t":"1"}`, 其中 `?` 后的参数值权重要高；如果为false，则将获得 `{"key1":"1key1","key2":"2key2"}`
 
-append
+
 ## 更新历史
+2015.12.3 v0.3.0 修复若干bug。
+
 2015.12.3 v0.2.0 修复若干bug。
 
 2015.12.1 v0.1.0 初始化工程。

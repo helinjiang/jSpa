@@ -52,11 +52,14 @@ window.PAGEDETAIL = (function () {
             console.debug("[detail.js][switchDo] curPageObj.triggerSwitch callback in"); //@debug
 
             var resultObj = $(".jresult", curPageContainer),
-                paramObj = curPageObj.getParam(true);
+                paramObj = curPageObj.getParam(),
+                allParamObj = curPageObj.getParam(true); 
 
             //因为我们引入了Zepto.js，因此也可以直接使用其api设置html，但我们强烈建议使用jSpa框架的设置方式，这样可以灵活处理
             // UTIL.setHtml(resultObj, "当前请求参数值为：" + JSON.stringify(paramObj));
             resultObj.html("当前请求参数值为：" + JSON.stringify(paramObj));
+
+            UTIL.setHtml(resultObj, "<br/>当前所有请求参数值（包括?部分的参数）为：" + JSON.stringify(allParamObj), true);
         });
     }
 
