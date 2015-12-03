@@ -46,13 +46,12 @@
     </style>
 </head>
 
-<body>
-    <p><a href="javascript:void(0);" data-nav="index">首页</a></p>
-    <p><a href="javascript:void(0);" data-nav="detail">detail页面</a></p>
-    <p><a href="javascript:void(0);" data-nav="detail(key1,key2)" data-key1="1key1" data-key2="2key2">detail页面，附加参数</a></p>
-    <hr>
+<body>    
     <div data-defpageid="index" data-switch="PAGEINDEX.switch" data-active="PAGEINDEX.active">
         <h1>首页</h1>
+        <p><a href="javascript:void(0);" data-nav="detail">detail页面</a></p>
+        <p><a href="javascript:void(0);" data-nav="detail(key1,key2)" data-key1="1key1" data-key2="2key2">detail页面，附加参数</a></p>
+        <hr>
         <p><a href="javascript:void(0);" data-click="EVENT.testClick">测试点击事件</a></p>
         <p><a href="javascript:void(0);" data-click="EVENT.testClick EVENT.testClick2">测试点击事件（两个）</a></p>
         <div class="jinfo">我将被替换成新的文本</div>
@@ -74,6 +73,10 @@
     </div>
     <div data-defpageid="detail" data-switch="PAGEDETAIL.switch">
         <h1>detail页面</h1>
+        <p><a href="javascript:void(0);" data-nav="index">首页</a></p>
+        <p><a href="javascript:void(0);" data-nav="detail">detail页面</a></p>
+        <p><a href="javascript:void(0);" data-nav="detail(key1,key2)" data-key1="1key1" data-key2="2key2">detail页面，附加参数</a></p>
+        <hr>
         <p><a class="btn btn-success" href="javascript:void(0);" data-click="EVENT.back">返回</a></p>
         <div class="jresult"></div>
     </div>
