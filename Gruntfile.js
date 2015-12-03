@@ -26,6 +26,15 @@ module.exports = function (grunt) {
         },
 
         copy: {
+            jsToMin: {
+                files: [{
+                    expand: true,
+                    cwd: '<%=distPath%>',
+                    src: ['**/*.js'],
+                    dest: '<%=distPath%>',
+                    ext: ".min.js"
+                }]
+            },
             jsToDemo: {
                 files: [{
                     expand: true,
@@ -99,9 +108,8 @@ module.exports = function (grunt) {
                 files: [{
                     expand: true,
                     cwd: '<%=distPath%>',
-                    src: ['*.js'],
-                    dest: '<%=distPath%>',
-                    ext: ".min.js"
+                    src: ['*.min.js'],
+                    dest: '<%=distPath%>'
                 }]
             }
         },
@@ -184,7 +192,7 @@ module.exports = function (grunt) {
                         pattern: '[^\\n]+\\/\\/\\s*@\\s*debug.*'
                     }
                 },
-                src: ['<%=distPath%>jspa.js']
+                src: ['<%=distPath%>*.min.js']
             }
         },
 
@@ -201,11 +209,11 @@ module.exports = function (grunt) {
     grunt.registerTask('live', ['connect', 'watch']);
 
     // 构建开发版本，也是合入svn的版本
-    grunt.registerTask('dev', ['clean', 'concat', 'jsbeautifier', 'copy:jsToDemo', 'copy:demoJs', 'copy:demoHtml', 'htmlstamp:dev']);
+    grunt.registerTask('dev', ['clean', 'jshint', 'concat', 'jsbeautifier', 'copy:jsToDemo', 'copy:demoJs', 'copy:demoHtml', 'htmlstamp:dev']);
 
     //不压缩，且开启文件变动检测自动编译
     grunt.registerTask('default', ['dev', 'live']);
 
-    //构建发布版本，压缩js和css
-    //grunt.registerTask('deploy', ['clean', 'concat', 'execute:jsClear', 'uglify', 'jshint']);
+    //构建发布版本，注意此处不涉及到demo，仅仅是jSpa框架的发布版本
+    grunt.registerTask('deploy', ['clean', 'jshint', 'concat', 'jsbeautifier', 'copy:jsToMin', 'file_modify', 'uglify']);
 };
