@@ -23,18 +23,25 @@ window.EVENT = (function(global, UTIL, undefined) {
 
     function testInview(e) {
         console.log('testInview: ', e.target);
+        var target = $(e.target),
+            curNum = target.data("count") || 0,
+            index = parseInt(curNum) + 1,
+            wrapper = $(".jbox");
 
-        // // 注意此处要设置些变量，避免频繁进行DOM操作，影响性能
-        // if (!e.target.isload) {
-        //     //将原来的内容直接替换
-        //     UTIL.setHtml($(e.target), UI_tpl.testinview());
 
-        //     //在原来的内容基础上追加
-        //     UTIL.setHtml($(e.target), UI_tpl.testinview(), true);
-        //     UTIL.setHtml($(e.target), UI_tpl.testinview(), true);
+        wrapper.append('<div class="box">' + index + '</div>');
+        target.data("count", index);
 
-        //     e.target.isload = 1;
-        // }
+        // 假设数据已经加载完毕，这里使用3次来模拟
+        if (index > 2) {
+            wrapper.append('<p>数据已经加载完成</p>');
+
+            // 移除懒加载锚点
+            // target.remove();
+
+            // 或者将data-inview属性移除也可以
+            target.removeAttr("data-inview");
+        }        
     }
 
 

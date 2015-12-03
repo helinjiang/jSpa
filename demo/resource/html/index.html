@@ -23,6 +23,26 @@
     *[data-defpageid].active {
         display: block;
     }
+
+    .box-wrapper{
+        border:1px solid green;
+        min-height: 50px;
+        margin-top: 500px;
+    }
+    .box-wrapper .loader{
+        border:1px solid red;
+        height: 10px;
+    }
+
+    .box-wrapper .box{
+        background-color: blue;
+        margin: 5px;
+        height: 60px;
+        color: #fff;
+        font-size: 32px;
+        text-align: center;
+        line-height: 60px;
+    }
     </style>
 </head>
 
@@ -36,6 +56,12 @@
         <p><a href="javascript:void(0);" data-click="EVENT.testClick">测试点击事件</a></p>
         <p><a href="javascript:void(0);" data-click="EVENT.testClick EVENT.testClick2">测试点击事件（两个）</a></p>
         <div class="jinfo"></div>
+        <div class="box-wrapper">
+            <h2>测试懒加载</h2>
+            <p>请向下滚动，懒加载执行3次则停止。</p>
+            <div class="jbox"></div>   
+            <div class="loader jloader" data-inview="EVENT.testInview"></div>         
+        </div>
     </div>
     <div data-defpageid="detail" data-switch="PAGEDETAIL.switch">
         <h1>detail页面</h1>

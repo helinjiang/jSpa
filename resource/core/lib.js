@@ -36,10 +36,18 @@ var LIB = (function (Page) {
         TINYSPA.render();
     }
 
+    function setHtml(container, html, append, triggerActive){
+        TINYSPA.setHtml(container, html, append, triggerActive);
+    }
+
+    function goToPage(id, param){
+        TINYSPA.goToPage(id, param);
+    }
+
     return {
         render: render,
-        goToPage: TINYSPA.goToPage,
-        setHtml: TINYSPA.setHtml,
+        goToPage: goToPage,
+        setHtml: setHtml,
         Page: Page
     };
 })(Page);

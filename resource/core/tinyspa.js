@@ -325,10 +325,15 @@ TinySpa.prototype.setHtml = function (container, html, append, triggerActive) {
 
         //触发相关事件
         setTimeout(function () {
+            // 每次设置了新的DOM,则需要为这个container重新绑定一次inview事件
             INVIEW.bindInview(container, function (e) {
-                TINYSPA.addEventAction(this, e); // TODO 此处可能会有问题
+                TINYSPA.addEventAction(this, e);
             });
+
+            // 每次设置了新的DOM,则需要触发domchange事件
             tinyspa.triggerEvent(container, "domchange");
+
+            // 每次设置了新的DOM,则如果triggerActive为true,则需要触发active事件
             if (triggerActive) {
                 tinyspa.triggerEvent(container, "active");
             }

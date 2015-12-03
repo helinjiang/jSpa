@@ -630,10 +630,15 @@ var jSpa = (function(window, undefined) {
 
             //触发相关事件
             setTimeout(function() {
+                // 每次设置了新的DOM,则需要为这个container重新绑定一次inview事件
                 INVIEW.bindInview(container, function(e) {
-                    TINYSPA.addEventAction(this, e); // TODO 此处可能会有问题
+                    TINYSPA.addEventAction(this, e);
                 });
+
+                // 每次设置了新的DOM,则需要触发domchange事件
                 tinyspa.triggerEvent(container, "domchange");
+
+                // 每次设置了新的DOM,则如果triggerActive为true,则需要触发active事件
                 if (triggerActive) {
                     tinyspa.triggerEvent(container, "active");
                 }
@@ -1003,7 +1008,6 @@ var jSpa = (function(window, undefined) {
      * @date   2015-11-30
      */
 
-
     /**
      * 绑定click事件，绑定到window对象上，通过e.target来确定当前的对象
      * @param  {String}   事件类型
@@ -1177,7 +1181,6 @@ var jSpa = (function(window, undefined) {
         TINYSPA.triggerEvent(window, "load");
     });
 
-
     // 全局绑定hashchange事件
     // TODO 这一块对history的模拟操作好像有问题
     window.on("hashchange", function(e) {
@@ -1240,8 +1243,6 @@ var jSpa = (function(window, undefined) {
 
         console.log("[jspa][app.js] urlFrom,urlCur:", TINYSPA.urlFrom, TINYSPA.urlCur); //@debug
 
-
-
         // if (location.hash == (QUEUE[QUEUE.length - 2] && "#" + QUEUE[QUEUE.length - 2].hash)) {
         //     QUEUE.pop();
         //     TINYSPA.currScrollY = QUEUE.length > 0 && QUEUE[QUEUE.length - 1].scrollY || 1;
@@ -1252,11 +1253,16 @@ var jSpa = (function(window, undefined) {
         });
     });
 
+    // 为body的元素处理inview事件
+    INVIEW.bindInview($("body"), function(e) {
+        TINYSPA.addEventAction(this, e);
+    });
+
     // TODO 要处理?channel=77777#id=index情况
     /**
      * 自动将data-defpageid的加入page中，自动生存ID
      */
-    $("[data-defpageid]").forEach(function(elem, index) {
+    $("[data-defpageid]").forEach(function(elem) {
 
         var pageId = UTIL.getDomData(elem, "defpageid");
 
@@ -1304,10 +1310,18 @@ var jSpa = (function(window, undefined) {
             TINYSPA.render();
         }
 
+        function setHtml(container, html, append, triggerActive) {
+            TINYSPA.setHtml(container, html, append, triggerActive);
+        }
+
+        function goToPage(id, param) {
+            TINYSPA.goToPage(id, param);
+        }
+
         return {
             render: render,
-            goToPage: TINYSPA.goToPage,
-            setHtml: TINYSPA.setHtml,
+            goToPage: goToPage,
+            setHtml: setHtml,
             Page: Page
         };
     })(Page);;

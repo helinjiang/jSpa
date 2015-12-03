@@ -5,7 +5,6 @@
  * @date   2015-11-30
  */
 
-
 /**
  * 绑定click事件，绑定到window对象上，通过e.target来确定当前的对象
  * @param  {String}   事件类型
@@ -26,7 +25,7 @@ window.on("click", function (e) {
             if (navTo && navTo !== null && navTo.length) {
                 var pattern0 = /(\w+)(\(([\w\d, ]+)\))?/g,
                     pattern1 = /[\w\d]+/g,
-                    res={};
+                    res = {};
 
                 //处理类似这种带参数的跳转id：<a data-nav="search(key)" data-key="xxx"></a>
                 navTo.replace(pattern0, function () {
@@ -179,10 +178,9 @@ document.addEventListener("DOMContentLoaded", function () {
     TINYSPA.triggerEvent(window, "load");
 });
 
-
 // 全局绑定hashchange事件
 // TODO 这一块对history的模拟操作好像有问题
-window.on("hashchange", function(e) {
+window.on("hashchange", function (e) {
     console.log("[jspa][app.js] hash QUEUE:", JSON.stringify(TINYSPA.queueHistory), history.length); //@debug
 
     var len = TINYSPA.queueHistory.length,
@@ -242,8 +240,6 @@ window.on("hashchange", function(e) {
 
     console.log("[jspa][app.js] urlFrom,urlCur:", TINYSPA.urlFrom, TINYSPA.urlCur); //@debug
 
-
-
     // if (location.hash == (QUEUE[QUEUE.length - 2] && "#" + QUEUE[QUEUE.length - 2].hash)) {
     //     QUEUE.pop();
     //     TINYSPA.currScrollY = QUEUE.length > 0 && QUEUE[QUEUE.length - 1].scrollY || 1;
@@ -254,11 +250,16 @@ window.on("hashchange", function(e) {
     });
 });
 
+// 为body的元素处理inview事件
+INVIEW.bindInview($("body"), function (e) {
+    TINYSPA.addEventAction(this, e);
+});
+
 // TODO 要处理?channel=77777#id=index情况
 /**
  * 自动将data-defpageid的加入page中，自动生存ID
  */
-$("[data-defpageid]").forEach(function(elem, index) {
+$("[data-defpageid]").forEach(function (elem) {
 
     var pageId = UTIL.getDomData(elem, "defpageid");
 
