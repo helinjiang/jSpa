@@ -151,11 +151,11 @@ jSpa框架的初始化函数，其中 `options` 为对象，支持：
 - `afterLoad`：在加载虚拟页面( `switch` 事件)之后执行的函数，可为空
 
 ### jSpa.goToPage
-Type: `Function(pageId, param)`
+Type: `Function(navTo, param)`
 
 跳转到哪个虚拟页面的函数。
 
-- `pageId`：字符串，要跳转的虚拟页面ID，最终会生成 `xxx.html#xxx`
+- `navTo`：字符串，要跳转的虚拟页面ID，最终会生成 `xxx.html#xxx`；或者是一个完整的url地址，则将跳转到这个地址
 - `param`：对象，附加的数据对象，例如 `param={a:1,b:1}` ，则最终会生成 `xxx.html#xxx&a=1&b=1`
 
 ### jSpa.setHtml
@@ -188,12 +188,6 @@ Type: `Function(container, html, append, triggerActive)`
 
 #### getPageParam() 
 获得“模拟页面”的URL上的请求参数，注意请每次都重新获取该参数值，因为同一个页面可能请求参数不一样，比如详情页，还会传递不同id等参数。
-
-
-
-## 备注
-
-注意传值不能为id，待修改
 
 
 append

@@ -555,8 +555,8 @@ var jSpa = (function(window, undefined) {
             return;
         }
 
-        if (this.getBeforeLoad === "function") {
-            this.getBeforeLoad(target);
+        if (typeof this.beforeLoad === "function") {
+            this.beforeLoad(target);
         }
     };
 
@@ -569,8 +569,8 @@ var jSpa = (function(window, undefined) {
             return;
         }
 
-        if (this.getAfterLoad === "function") {
-            this.getAfterLoad(target);
+        if (typeof this.afterLoad === "function") {
+            this.afterLoad(target);
         }
     };
 
@@ -653,8 +653,12 @@ var jSpa = (function(window, undefined) {
      * 获得当前的页面ID，即page id
      * @return {string} 页面ID
      */
-    TinySpa.prototype.getHashId = function() {
-        return this.getCheckedId(this.getHashKV().id);
+    TinySpa.prototype.getCurPageId = function() {
+        // 合法的hash值格式为#index&x=1,因此只要获取#之后的那个值即可
+        var hash = location.hash,
+            pageId = hash.match(/#([^&]*)&?/)[1];
+
+        return this.getCheckedId(pageId);
     };
 
     /**
@@ -677,14 +681,15 @@ var jSpa = (function(window, undefined) {
 
     /**
      * 页面切换都指定page页面，同时传递参数param
-     * @param  {string} id    page id
-     * @param  {object} param 附加参数
+     * @param  {string} pageId    page id
+     * @param  {Object} param 附加参数
+     * @param  {Object} target 当前dom
      */
-    TinySpa.prototype.goToPage = function(id, param) {
+    TinySpa.prototype.goToPage = function(navTo, param, target) {
         //如果id为http或https请求，则直接跳转到指定页面
-        if (/^http(s)?:/i.test(id)) {
+        if (/^http(s)?:/i.test(navTo)) {
             setTimeout(function() {
-                location.href = id;
+                location.href = pageId;
             }, 500);
             return;
         }
@@ -694,17 +699,44 @@ var jSpa = (function(window, undefined) {
             param = {};
         }
 
-        // 设置要跳转的页面ID
-        param.id = this.getCheckedId(param.id);
+        var pattern = /(\w+)(\((\w[^,])+\))?/g,
+            res = {},
+            arr = navTo.match(pattern),
+            pageId;
 
-        // 处理hash
-        var hashTo = "#" + UTIL.serializeParam(param);
+        // 处理类似这种带参数的跳转id：<a data-nav="search(key)" data-key="xxx"></a>
+        if (!arr) {
+            console.error("[jspa][tinyspa.js][goToPage] Can not find anything from " + navTo);
+            return;
+        }
 
-        // 设置当前的hash
-        this.urlCur = location.hash;
+        // 获得页面ID，例如：<a data-nav="search)"></a>中的search
+        pageId = this.getCheckedId(arr.shift());
 
+        // 如果arr还有元素，则此时处理的是类似这种带参数的跳转id：<a data-nav="search(key)" data-key="xxx"></a>
+        if (arr.length > 0 && target) {
+            for (var i = 0, length = arr.length; i < length; i++) {
+                var val = UTIL.getDomData(target, arr[i]);
+                if (val) {
+                    res[arr[i]] = val;
+                }
+            }
+        }
 
-        // 跳转到新的页面
+        // 合并res和param，其中param参数优先级高
+        for (var k in param) {
+            res[k] = param[k];
+        }
+
+        // 生成新的hash值
+        var str = UTIL.serializeParam(res),
+            hashTo = "#" + pageId;
+
+        if (str) {
+            hashTo = hashTo + "&" + str;
+        }
+
+        // 切换页面
         location.hash = hashTo;
     };
 
@@ -721,7 +753,7 @@ var jSpa = (function(window, undefined) {
         this.loadDom(id, data);
 
         //回到上次记录的高度
-        window.scrollTo(0, this.currScrollY);
+        //window.scrollTo(0, this.currScrollY);
     };
 
     /**
@@ -987,31 +1019,13 @@ var jSpa = (function(window, undefined) {
             navTo,
             action = function() {
                 // 处理click事件
-                if (clickFn && clickFn !== null && clickFn.length) {
+                if (clickFn && clickFn.length) {
                     TINYSPA.addEventAction(target, e);
                 }
 
                 // 处理页面切换
-                if (navTo && navTo !== null && navTo.length) {
-                    var pattern0 = /(\w+)(\(([\w\d, ]+)\))?/g,
-                        pattern1 = /[\w\d]+/g,
-                        res = {};
-
-                    //处理类似这种带参数的跳转id：<a data-nav="search(key)" data-key="xxx"></a>
-                    navTo.replace(pattern0, function() {
-                        res.id = arguments[1];
-                        if (arguments[3]) {
-                            var params = arguments[3].match(pattern1);
-                            for (var i = 0, m = params.length; i < m; ++i) {
-                                var val = UTIL.getDomData(target, params[i]);
-                                if (val) {
-                                    res[params[i]] = val;
-                                }
-                            }
-                        }
-                    });
-
-                    TINYSPA.goToPage(navTo, res);
+                if (navTo && navTo.length) {
+                    TINYSPA.goToPage(navTo, {}, target);
                 }
             };
 
@@ -1167,8 +1181,7 @@ var jSpa = (function(window, undefined) {
 
         console.log("[jspa][app.js] urlFrom=%s, urlCur=%s", TINYSPA.urlFrom, TINYSPA.urlCur); //@debug
 
-        // TODO id
-        TINYSPA.activePage(TINYSPA.getHashKV().id, {
+        TINYSPA.activePage(TINYSPA.getCurPageId(), {
             "urlFrom": TINYSPA.urlFrom,
             "urlCur": TINYSPA.urlCur
         });
@@ -1235,8 +1248,8 @@ var jSpa = (function(window, undefined) {
             TINYSPA.setHtml(container, html, append, triggerActive);
         }
 
-        function goToPage(id, param) {
-            TINYSPA.goToPage(id, param);
+        function goToPage(navTo, param) {
+            TINYSPA.goToPage(navTo, param);
         }
 
         return {

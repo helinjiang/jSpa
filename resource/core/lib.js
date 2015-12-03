@@ -40,8 +40,8 @@ var LIB = (function (Page) {
         TINYSPA.setHtml(container, html, append, triggerActive);
     }
 
-    function goToPage(id, param){
-        TINYSPA.goToPage(id, param);
+    function goToPage(navTo, param){
+        TINYSPA.goToPage(navTo, param);
     }
 
     return {
