@@ -36,14 +36,17 @@ function TinySpa() {
     this.queueEvent = [];
 
     /**
-     * 访问历史路径
-     * @type {Array}
+     * 当前的url从哪跳转过来的，取自location.hash值，如果是从外部而来，则值为document.referrer || "DIRECT";
+     * @type {String}
      */
-    this.queueHistory = [];
-
-    this.currScrollY = 1;
     this.urlFrom = undefined;
+
+    /**
+     * 当前的url hash值，取自location.hash值
+     * @type {String}
+     */
     this.urlCur = undefined;
+
     /**
      * 加载前调用的方法
      * @type {function}
@@ -386,51 +389,15 @@ TinySpa.prototype.goToPage = function (id, param) {
         param = {};
     }
 
-    //设置要跳转的页面ID
+    // 设置要跳转的页面ID
     param.id = this.getCheckedId(param.id);
 
-    //处理hash
+    // 处理hash
     var hashTo = "#" + UTIL.serializeParam(param);
 
-    var len = this.queueHistory.length,
-        last,
-        lastSecond;
+    // 设置当前的hash
+    this.urlCur = location.hash;
 
-    if (len > 0) {
-        last = this.queueHistory[len - 1];
-        if (last.hash === hashTo) {
-            // 如果要去的页面就是当前页面，则不会发生跳转
-            console.debug("[jspa][navigate.js][to] to self!"); //@debug
-            return;
-        } else {
-            if (len > 1) {
-                // 如果队列中倒数第二个就是本页，则模拟“后退”，
-                // 比如跳转之前是[index,detail]，下一步要跳转到index，则此时应该是[index]而不是[index,detail,index]
-                lastSecond = this.queueHistory[len - 2];
-                if (lastSecond.hash === hashTo) {
-                    console.debug("[jspa][navigate.js][to] Equal to history.back()", lastSecond.hash, hashTo); //@debug
-                    this.queueHistory.pop();
-                    len--;
-
-                    // currScrollY = lastSecond.scrollY || 1;
-                    console.debug("[jspa][navigate.js][to] Equal to history.back() after pop:", JSON.stringify(this.queueHistory), history.length); //@debug
-                    history.back();
-                    return;
-                }
-            }
-
-            // 记录跳转之前页面的滚动条位置
-            last.scrollY = window.scrollY;
-        }
-    }
-
-    // 如果不是当前页面，则增加历史记录
-    this.queueHistory.push({
-        hash: hashTo
-    });
-
-    // 设置当前的页面滚动条位置
-    this.currScrollY = 1;
 
     // 跳转到新的页面
     location.hash = hashTo;

@@ -1194,14 +1194,17 @@ var jSpa = (function(window, undefined) {
         this.queueEvent = [];
 
         /**
-         * 访问历史路径
-         * @type {Array}
+         * 当前的url从哪跳转过来的，取自location.hash值，如果是从外部而来，则值为document.referrer || "DIRECT";
+         * @type {String}
          */
-        this.queueHistory = [];
-
-        this.currScrollY = 1;
         this.urlFrom = undefined;
+
+        /**
+         * 当前的url hash值，取自location.hash值
+         * @type {String}
+         */
         this.urlCur = undefined;
+
         /**
          * 加载前调用的方法
          * @type {function}
@@ -1542,51 +1545,15 @@ var jSpa = (function(window, undefined) {
             param = {};
         }
 
-        //设置要跳转的页面ID
+        // 设置要跳转的页面ID
         param.id = this.getCheckedId(param.id);
 
-        //处理hash
+        // 处理hash
         var hashTo = "#" + UTIL.serializeParam(param);
 
-        var len = this.queueHistory.length,
-            last,
-            lastSecond;
+        // 设置当前的hash
+        this.urlCur = location.hash;
 
-        if (len > 0) {
-            last = this.queueHistory[len - 1];
-            if (last.hash === hashTo) {
-                // 如果要去的页面就是当前页面，则不会发生跳转
-                console.debug("[jspa][navigate.js][to] to self!"); //@debug
-                return;
-            } else {
-                if (len > 1) {
-                    // 如果队列中倒数第二个就是本页，则模拟“后退”，
-                    // 比如跳转之前是[index,detail]，下一步要跳转到index，则此时应该是[index]而不是[index,detail,index]
-                    lastSecond = this.queueHistory[len - 2];
-                    if (lastSecond.hash === hashTo) {
-                        console.debug("[jspa][navigate.js][to] Equal to history.back()", lastSecond.hash, hashTo); //@debug
-                        this.queueHistory.pop();
-                        len--;
-
-                        // currScrollY = lastSecond.scrollY || 1;
-                        console.debug("[jspa][navigate.js][to] Equal to history.back() after pop:", JSON.stringify(this.queueHistory), history.length); //@debug
-                        history.back();
-                        return;
-                    }
-                }
-
-                // 记录跳转之前页面的滚动条位置
-                last.scrollY = window.scrollY;
-            }
-        }
-
-        // 如果不是当前页面，则增加历史记录
-        this.queueHistory.push({
-            hash: hashTo
-        });
-
-        // 设置当前的页面滚动条位置
-        this.currScrollY = 1;
 
         // 跳转到新的页面
         location.hash = hashTo;
@@ -2035,69 +2002,23 @@ var jSpa = (function(window, undefined) {
     // 全局绑定hashchange事件
     // TODO 这一块对history的模拟操作好像有问题
     window.on("hashchange", function(e) {
-        console.log("[jspa][app.js] hash QUEUE:", JSON.stringify(TINYSPA.queueHistory), history.length); //@debug
+        console.log("[jspa][app.js] hashchange"); //@debug
 
-        var len = TINYSPA.queueHistory.length,
-            curHash = location.hash,
-            lastSecond,
-            last;
+        var curHash = location.hash;
 
-        if (len > 1) {
-            lastSecond = TINYSPA.queueHistory[len - 2];
-            // console.log("-------", lastSecond.hash, curHash, lastSecond.hash === curHash);
-            if (lastSecond.hash === curHash) {
-                // 如果队列中倒数第二个就是本页，则模拟“后退”，
-                // 比如跳转之前是[index,detail]，hashchange之后到了index，则此时应该是[index]而不是[index,detail,index]
-                console.debug("[jspa][app.js] hashchange happend! Equal to history.back()"); //@debug
-                TINYSPA.queueHistory.pop();
-                len--;
-
-                TINYSPA.currScrollY = lastSecond.scrollY || 1;
-                console.log("[jspa][app.js] hash QUEUE after history.back():", JSON.stringify(TINYSPA.queueHistory)); //@debug
-            }
-        }
-
-        // 如果队列中最后一个地址不是location.hash，则增加之。
-        if (len > 0) {
-            last = TINYSPA.queueHistory[len - 1];
-
-            if (last.hash !== curHash) {
-                console.log("[jspa][app.js] add in QUEUE before:", JSON.stringify(TINYSPA.queueHistory)); //@debug
-                // 如果不是当前页面，则增加历史记录，且设置滚动条位置
-                TINYSPA.queueHistory.push({
-                    hash: curHash,
-                    scrollY: window.scrollY
-                });
-                console.log("[jspa][app.js] add in QUEUE after:", JSON.stringify(TINYSPA.queueHistory)); //@debug
-            } else {
-                //找到当前的页面，则要设置滚动条位置
-                console.log("[jspa][app.js] Exist in QUEUE scrollY:", JSON.stringify(last)); //@debug
-                TINYSPA.currScrollY = last.scrollY || 1;
-            }
-        } else {
-            console.log("[jspa][app.js] QUEUE is EMPTY", JSON.stringify(TINYSPA.queueHistory)); //@debug
-            // 如果队列为空，则增加一条记录
-            TINYSPA.queueHistory.push({
-                hash: curHash,
-                scrollY: window.scrollY
-            });
-            console.log("[jspa][app.js] add first one in QUEUE ", JSON.stringify(TINYSPA.queueHistory)); //@debug
-        }
-
-        if (!TINYSPA.urlFrom) {
-            TINYSPA.urlFrom = "DIRECT";
-            TINYSPA.urlCur = curHash;
+        // 如果不存在旧的urlCur，则取值document.referrer || "DIRECT"
+        if (!TINYSPA.urlCur) {
+            TINYSPA.urlFrom = document.referrer || "DIRECT";
         } else {
             TINYSPA.urlFrom = TINYSPA.urlCur;
-            TINYSPA.urlCur = curHash;
         }
 
-        console.log("[jspa][app.js] urlFrom,urlCur:", TINYSPA.urlFrom, TINYSPA.urlCur); //@debug
+        // 将当前的urlCur修改为新的
+        TINYSPA.urlCur = curHash;
 
-        // if (location.hash == (QUEUE[QUEUE.length - 2] && "#" + QUEUE[QUEUE.length - 2].hash)) {
-        //     QUEUE.pop();
-        //     TINYSPA.currScrollY = QUEUE.length > 0 && QUEUE[QUEUE.length - 1].scrollY || 1;
-        // }
+        console.log("[jspa][app.js] urlFrom=%s, urlCur=%s", TINYSPA.urlFrom, TINYSPA.urlCur); //@debug
+
+        // TODO id
         TINYSPA.activePage(TINYSPA.getHashKV().id, {
             "urlFrom": TINYSPA.urlFrom,
             "urlCur": TINYSPA.urlCur

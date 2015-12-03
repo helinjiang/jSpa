@@ -81,6 +81,8 @@ switch 函数中将传入一个参数 `e` ，该参数与调用 `onclick` 事件
 
 同一个 `data-switch` 中可以定义多个函数名，多个直接使用空格分隔。
 
+switch 方法中，`e.data` 中已经附带了urlFrom(上一个页面hash值或者URL)和urlCur（当前页面hash值），这两个字段可以用于统计等用途。
+
 
 ```html
 
@@ -107,6 +109,7 @@ active 函数中将传入一个参数 `e` ，该参数与调用 `onclick` 事件
 
 同一个 `data-active` 中可以定义多个函数名，多个直接使用空格分隔。
 
+active 方法中，`e.data` 中已经附带了urlFrom(上一个页面hash值或者URL)和urlCur（当前页面hash值），这两个字段可以用于统计等用途。
 
 ```html
 
@@ -189,16 +192,12 @@ Type: `Function(container, html, append, triggerActive)`
 
 
 ## 备注
-switch意味着切换，只有在切换页面时才触发。e.data中已经附带了urlFrom(上一个页面hash值)和urlCur（当前页面hash值）
 
 注意传值不能为id，待修改
 
-hashchange事件发生之后，应该要实时刷新缓存的pageParam，可以使用map[pageId] = pageObj，来更新
-
-
-有时候切换页面时，可能导致误返回，跳出了系统，需要确认
 
 append
 ## 更新历史
 2015.12.3 v0.2.0 修复若干bug。
+
 2015.12.1 v0.1.0 初始化工程。
