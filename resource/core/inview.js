@@ -75,7 +75,7 @@ var INVIEW = (function(UTIL) {
     }
 
     //触发方法，返回有多少个被触发
-    function handle(event) {
+    function handle() {
         var count = 0;
         for (var m = waitshow.length - 1; m >= 0; --m) { //反向迭代防止数据移除导致的异常
             var t = waitshow[m];

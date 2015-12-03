@@ -188,16 +188,6 @@ Type: `Function(container, html, append, triggerActive)`
 
 
 
-## 测试用例
-
-### 路由切换
-使用`new jSpa.Page(pageId)`命令创建一个页面：
-
-1. 设置pageObj.initPage方法，也可以不设置，但推荐设置，可以在此函数中处理初始化的事情，比如获取首次加载之后的dom元素、url中的参数等
-2. 增加对外使用的switchDo函数，在其中调用pageObj.triggerSwitch方法，并在为该方法传递回调函数
-3. 增加对外使用的activeDo函数，在其中调用pageObj.triggerActive方法，并在为该方法传递回调函数
-
-
 ## 备注
 switch意味着切换，只有在切换页面时才触发。e.data中已经附带了urlFrom(上一个页面hash值)和urlCur（当前页面hash值）
 
@@ -210,4 +200,5 @@ hashchange事件发生之后，应该要实时刷新缓存的pageParam，可以�
 
 append
 ## 更新历史
+2015.12.3 v0.2.0 修复若干bug。
 2015.12.1 v0.1.0 初始化工程。

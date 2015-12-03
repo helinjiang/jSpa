@@ -108,9 +108,12 @@ window.PAGEINDEX = (function () {
      */
     function _showInfo() {
         //获取缓存在CACHE中的数据，并且渲染出来，如果存在则表格呈现，如果不存在，则提示无数据
-        var jinfodom = $(".jinfo", curPageContainer);
+        var jinfodom = $(".jinfo", curPageContainer),
+        jinviewlasydom = $(".jinviewlazy", curPageContainer);
 
         UTIL.setHtml(jinfodom, 'Hello，我是请求数据之后再动态生成的！');
+        UTIL.setHtml(jinviewlasydom, '<div data-inview="EVENT.testInviewLazy"></div><img src="http://mat1.gtimg.com/news/news2013/LOGO.jpg" data-src="http://mat1.gtimg.com/www/images/qq2012/qqlogo_1x.png">',true);
+          
     }
 
     //提供给外部的接口
