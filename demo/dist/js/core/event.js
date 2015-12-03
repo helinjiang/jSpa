@@ -2,12 +2,10 @@
  * 事件定义，用于处理如data-click等事件，可能支持多个函数，使用空格分开，
  * 比如data-click="NAVIGATE.scrollToContainer EVENTS.closeDlg"
  *
- * 如果是业务处理相关的，则请放置在action.js中，如果是公共处理相关的，则请放置在util.js中
- *
- * @author linjianghe
- * @date   2015-07-16
+ * @author helinjiang
+ * @date   2015-11-30
  */
-window.EVENT = (function(global, UTIL, undefined) {
+window.EVENT = (function (UTIL, undefined) {
 
     function testClick(e) {
         console.log('testClick: ', e.target);
@@ -68,4 +66,4 @@ window.EVENT = (function(global, UTIL, undefined) {
 
     return exports;
 
-})(window, window.UTIL);
+})(window.UTIL);

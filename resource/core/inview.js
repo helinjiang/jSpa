@@ -2,10 +2,10 @@
  * 这个JS定义了一个控件, 当已注册的页面元素显现时(出现在用户视窗内)触发动作，
  * 用以识别并触发data-inview中的事件，并处理data-src图片懒加载
  *
- * @author linjianghe
- * @date   2015-07-15
+ * @author helinjiang
+ * @date   2015-11-30
  */
-var INVIEW = (function(UTIL) {
+var INVIEW = (function (UTIL) {
     var threshold = 30; //预加载30像素,即目标还有30像素才显示就开始加载
     var waitshow = []; //所有需要延迟加载的DOM列表
 
@@ -62,11 +62,11 @@ var INVIEW = (function(UTIL) {
     function bindInview(node, fn) {
         bind.call(node.querySelectorAll("[data-inview]"), fn);
 
-        bind.call(node.querySelectorAll("img[data-src]"), function() {
+        bind.call(node.querySelectorAll("img[data-src]"), function () {
             var that = this,
                 src = UTIL.getDomData(that, "src"),
                 temp = new Image();
-            temp.onload = function() {
+            temp.onload = function () {
                 that.setAttribute("src", src); //后台加载完之后再给赋值.
                 that.removeAttribute("data-src");
             };
@@ -94,11 +94,11 @@ var INVIEW = (function(UTIL) {
     }
 
     // 这个逻辑需要仔细看下 把要清除掉的html中已经绑定了inview的在waitshow里面的去除掉
-    window.addEventListener("destroy", function(e) {
+    window.addEventListener("destroy", function (e) {
         var target = e.target,
             inviews = [].concat(target.querySelectorAll("[data-inview]"), target.querySelectorAll("img[data-src]"));
         for (var i = 0, one, l = inviews.length;
-            (one = inviews[i]) && i < l; i++) {
+             (one = inviews[i]) && i < l; i++) {
             if (waitshow.indexOf(one) >= 0) {
                 waitshow.splice(index, 1);
             }

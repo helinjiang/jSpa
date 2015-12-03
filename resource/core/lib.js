@@ -36,11 +36,11 @@ var LIB = (function (Page) {
         TINYSPA.render();
     }
 
-    function setHtml(container, html, append, triggerActive){
+    function setHtml(container, html, append, triggerActive) {
         TINYSPA.setHtml(container, html, append, triggerActive);
     }
 
-    function goToPage(navTo, param){
+    function goToPage(navTo, param) {
         TINYSPA.goToPage(navTo, param);
     }
 

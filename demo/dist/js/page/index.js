@@ -6,8 +6,8 @@
  *     activeDo： 切换到本页面时触发的函数，响应active事件，非必须，主要用于某些场景，比如统计等
  *     getPageObj：获得本页Page对象，非必须，在event.js等页面使用时，便于操作相应的DOM
  *
- * @author linjianghe
- * @date   2015-09-18
+ * @author helinjiang
+ * @date   2015-11-30
  */
 window.PAGEINDEX = (function () {
 
@@ -25,9 +25,6 @@ window.PAGEINDEX = (function () {
 
     /**
      * 初始化“虚拟页面”，注意只初始化一次，且仅在要使用的时候再初始化它。
-     *
-     * @author linjianghe
-     * @date   2015-09-18
      */
     function _initPage() {
         if (!curPageObj) {
@@ -49,9 +46,7 @@ window.PAGEINDEX = (function () {
 
     /**
      * 提供给外部的接口，绑定为switch事件
-     * @param  {object}   e 事件
-     * @author linjianghe
-     * @date   2015-08-06
+     * @param  {Object}   e 事件，e.data中还包含了urlCur和urlFrom，可用于统计等用途
      */
     function switchDo(e) {
         console.debug("[index.js][switchDo] in", e); //@debug
@@ -70,9 +65,7 @@ window.PAGEINDEX = (function () {
 
     /**
      * 提供给外部的接口，绑定为active事件
-     * @param  {object}   e 事件
-     * @author linjianghe
-     * @date   2015-08-06
+     * @param  {Object}   e 事件，e.data中还包含了urlCur和urlFrom，可用于统计等用途
      */
     function activeDo(e) {
         console.debug("[index.js][activeDo] in", e); //@debug
@@ -89,8 +82,6 @@ window.PAGEINDEX = (function () {
     /**
      * 提供给外部的接口，获得本“虚拟页面”的Page对象
      * @return {Object}   本“虚拟页面”的Page对象
-     * @author linjianghe
-     * @date   2015-09-18
      */
     function getPageObj() {
         console.debug("[index.js][getPageObj] in"); //@debug
@@ -103,17 +94,15 @@ window.PAGEINDEX = (function () {
 
     /**
      * 初始化，每次切换到首页时都要重新初始化，因为数据可能已经新增了，也可能已经修改了
-     * @author linjianghe
-     * @date   2015-07-16
      */
     function _showInfo() {
         //获取缓存在CACHE中的数据，并且渲染出来，如果存在则表格呈现，如果不存在，则提示无数据
         var jinfodom = $(".jinfo", curPageContainer),
-        jinviewlasydom = $(".jinviewlazy", curPageContainer);
+            jinviewlasydom = $(".jinviewlazy", curPageContainer);
 
         UTIL.setHtml(jinfodom, 'Hello，我是请求数据之后再动态生成的！');
-        UTIL.setHtml(jinviewlasydom, '<div data-inview="EVENT.testInviewLazy"></div><img src="http://mat1.gtimg.com/news/news2013/LOGO.jpg" data-src="http://mat1.gtimg.com/www/images/qq2012/qqlogo_1x.png">',true);
-          
+        UTIL.setHtml(jinviewlasydom, '<div data-inview="EVENT.testInviewLazy"></div><img src="http://mat1.gtimg.com/news/news2013/LOGO.jpg" data-src="http://mat1.gtimg.com/www/images/qq2012/qqlogo_1x.png">', true);
+
     }
 
     //提供给外部的接口

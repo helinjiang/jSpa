@@ -7,10 +7,10 @@
  *
  * 注意：在设置html代码时，建议用jSpa框架提供的设置，而不要采用Zepto框架的设置方法，这样可以更方便处理事件（比如active）
  *
- * @author linjianghe
- * @date   2015-09-18
+ * @author helinjiang
+ * @date   2015-11-30
  */
-window.PAGEDETAIL = (function() {
+window.PAGEDETAIL = (function () {
 
     /**
      * 当前的页面对象，是一个jSpa.Page对象
@@ -26,9 +26,6 @@ window.PAGEDETAIL = (function() {
 
     /**
      * 初始化“虚拟页面”，注意只初始化一次，且仅在要使用的时候再初始化它。
-     *
-     * @author linjianghe
-     * @date   2015-09-18
      */
     function _initPage() {
         if (!curPageObj) {
@@ -40,12 +37,9 @@ window.PAGEDETAIL = (function() {
         }
     }
 
-
     /**
      * 提供给外部的接口，绑定为switch事件
-     * @param  {object}   e 事件
-     * @author linjianghe
-     * @date   2015-08-06
+     * @param  {Object}   e 事件，e.data中还包含了urlCur和urlFrom，可用于统计等用途
      */
     function switchDo(e) {
         console.debug("[detail.js][switchDo] in", e); //@debug
@@ -54,7 +48,7 @@ window.PAGEDETAIL = (function() {
         _initPage();
 
         // 调用Page对象的triggerSwitch方法，触发switch事件，并执行回调
-        curPageObj.triggerSwitch(function() {
+        curPageObj.triggerSwitch(function () {
             console.debug("[detail.js][switchDo] curPageObj.triggerSwitch callback in"); //@debug
 
             var resultObj = $(".jresult", curPageContainer),
@@ -69,8 +63,6 @@ window.PAGEDETAIL = (function() {
     /**
      * 提供给外部的接口，获得本“虚拟页面”的Page对象
      * @return {Object}   本“虚拟页面”的Page对象
-     * @author linjianghe
-     * @date   2015-09-18
      */
     function getPageObj() {
         console.debug("[index.js][getPageObj] in"); //@debug
@@ -80,7 +72,6 @@ window.PAGEDETAIL = (function() {
 
         return curPageObj;
     }
-
 
     //提供给外部的接口
     var exports = {

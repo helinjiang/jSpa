@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="author" content="linjianghe">
+    <meta name="author" content="helinjiang">
     <meta name="format-detection" content="telephone=no">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -13,7 +13,7 @@
 
     <title>jSpa，轻量级单页应用框架</title>
     <script type="text/javascript">
-    window.console && console.log("cur=" + location.href);
+        window.console && console.log("cur=" + location.href);
     </script>
     <style type="text/css">
     *[data-defpageid] {
@@ -46,13 +46,12 @@
     </style>
 </head>
 
-<body>
-    <p><a href="javascript:void(0);" data-nav="index">首页</a></p>
-    <p><a href="javascript:void(0);" data-nav="detail">detail页面</a></p>
-    <p><a href="javascript:void(0);" data-nav="detail(key1,key2)" data-key1="1key1" data-key2="2key2">detail页面，附加参数</a></p>
-    <hr>
+<body>    
     <div data-defpageid="index" data-switch="PAGEINDEX.switch" data-active="PAGEINDEX.active">
         <h1>首页</h1>
+        <p><a href="javascript:void(0);" data-nav="detail">detail页面</a></p>
+        <p><a href="javascript:void(0);" data-nav="detail(key1,key2)" data-key1="1key1" data-key2="2key2">detail页面，附加参数</a></p>
+        <hr>
         <p><a href="javascript:void(0);" data-click="EVENT.testClick">测试点击事件</a></p>
         <p><a href="javascript:void(0);" data-click="EVENT.testClick EVENT.testClick2">测试点击事件（两个）</a></p>
         <div class="jinfo">我将被替换成新的文本</div>
@@ -74,6 +73,10 @@
     </div>
     <div data-defpageid="detail" data-switch="PAGEDETAIL.switch">
         <h1>detail页面</h1>
+        <p><a href="javascript:void(0);" data-nav="index">首页</a></p>
+        <p><a href="javascript:void(0);" data-nav="detail">detail页面</a></p>
+        <p><a href="javascript:void(0);" data-nav="detail(key1,key2)" data-key1="1key1" data-key2="2key2">detail页面，附加参数</a></p>
+        <hr>
         <p><a class="btn btn-success" href="javascript:void(0);" data-click="EVENT.back">返回</a></p>
         <div class="jresult"></div>
     </div>
@@ -84,14 +87,14 @@
     </div>
 
 
-    <script type="text/javascript" src="./jspa/jspa-fastclick.js?_v=151203163915"></script>
-    <script type="text/javascript" src="./js/lib/zepto.min.js?_v=151203163915"></script>
+    <script type="text/javascript" src="./jspa/jspa-fastclick.js?_v=151203170102"></script>
+    <script type="text/javascript" src="./js/lib/zepto.min.js?_v=151203170102"></script>
 
-    <script type="text/javascript" src="./js/core/util.js?_v=151203163915"></script>
-    <script type="text/javascript" src="./js/core/event.js?_v=151203163915"></script>
+    <script type="text/javascript" src="./js/core/util.js?_v=151203170102"></script>
+    <script type="text/javascript" src="./js/core/event.js?_v=151203170102"></script>
     
-    <script type="text/javascript" src="./js/page/index.js?_v=151203163915"></script>
-    <script type="text/javascript" src="./js/page/detail.js?_v=151203163915"></script>
+    <script type="text/javascript" src="./js/page/index.js?_v=151203170102"></script>
+    <script type="text/javascript" src="./js/page/detail.js?_v=151203170102"></script>
 
     <script type="text/javascript">
         UTIL.initjSpa();

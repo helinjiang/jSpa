@@ -196,8 +196,8 @@ var jSpa = (function(window, undefined) {
      * 这个JS定义了一个控件, 当已注册的页面元素显现时(出现在用户视窗内)触发动作，
      * 用以识别并触发data-inview中的事件，并处理data-src图片懒加载
      *
-     * @author linjianghe
-     * @date   2015-07-15
+     * @author helinjiang
+     * @date   2015-11-30
      */
     var INVIEW = (function(UTIL) {
         var threshold = 30; //预加载30像素,即目标还有30像素才显示就开始加载
@@ -308,8 +308,8 @@ var jSpa = (function(window, undefined) {
     /**
      * TinySpa 类定义
      *
-     * @author linjianghe
-     * @date   2015-11-26
+     * @author helinjiang
+     * @date   2015-11-30
      */
 
     /**
@@ -320,13 +320,13 @@ var jSpa = (function(window, undefined) {
 
         /**
          * 默认的页面ID，如果没有#id这样的参数的话
-         * @type {string}
+         * @type {String}
          */
         this.pageDefaultId = 'index';
 
         /**
          * 出错的页面ID，如果有#id=xxx，但xxx在页面中又没定义的话
-         * @type {string}
+         * @type {String}
          */
         this.page404Id = this.pageDefaultId;
 
@@ -356,13 +356,13 @@ var jSpa = (function(window, undefined) {
 
         /**
          * 加载前调用的方法
-         * @type {function}
+         * @type {Function}
          */
         this.beforeLoad = function() {};
 
         /**
          * 加载后调用的方法
-         * @type {function}
+         * @type {Function}
          */
         this.afterLoad = function() {};
     }
@@ -430,7 +430,7 @@ var jSpa = (function(window, undefined) {
 
     /**
      * 设置默认页面
-     * @param  {string}   pageId 默认页面ID
+     * @param  {String}   pageId 默认页面ID
      */
     TinySpa.prototype.setPageDefaultId = function(pageId) {
         if (typeof pageId !== "string") {
@@ -576,9 +576,8 @@ var jSpa = (function(window, undefined) {
 
     /**
      * 加载并渲染某页面中的元素
-     * @param  {string} id    page id
-     * @param  {object} data    附加的数据，包括urlFrom和urlCur等
-     * @author linjianghe
+     * @param  {String} id    page id
+     * @param  {Object} data    附加的数据，包括urlFrom和urlCur等
      */
     TinySpa.prototype.loadDom = function(id, data) {
         id = this.getCheckedId(id);
@@ -602,11 +601,10 @@ var jSpa = (function(window, undefined) {
 
     /**
      * 设置container中的html
-     * @param {object} container     DOM元素
-     * @param {string} html          html代码
-     * @param {boolean} append       是否为追加，如果为true，则container中的内容会先被销毁，默认为false，即覆盖
-     * @param {boolean} triggerActive 是否触发active事件，如果为ture，则若container元素上定义了data-active就会触发其中的方法，默认不触发
-     * @author linjianghe
+     * @param {Object} container     DOM元素
+     * @param {String} html          html代码
+     * @param {Boolean} append       是否为追加，如果为true，则container中的内容会先被销毁，默认为false，即覆盖
+     * @param {Boolean} triggerActive 是否触发active事件，如果为ture，则若container元素上定义了data-active就会触发其中的方法，默认不触发
      */
     TinySpa.prototype.setHtml = function(container, html, append, triggerActive) {
         var tinyspa = this;
@@ -651,7 +649,7 @@ var jSpa = (function(window, undefined) {
 
     /**
      * 获得当前的页面ID，即page id
-     * @return {string} 页面ID
+     * @return {String} 页面ID
      */
     TinySpa.prototype.getCurPageId = function() {
         // 合法的hash值格式为#index&x=1,因此只要获取#之后的那个值即可
@@ -663,7 +661,7 @@ var jSpa = (function(window, undefined) {
 
     /**
      * 获得URL中参数对象
-     * @return {object} URL中参数对象
+     * @return {Object} URL中参数对象
      */
     TinySpa.prototype.getHashKV = function() {
         var hash = decodeURIComponent(location.hash);
@@ -681,7 +679,7 @@ var jSpa = (function(window, undefined) {
 
     /**
      * 页面切换都指定page页面，同时传递参数param
-     * @param  {string} pageId    page id
+     * @param  {String} pageId    page id
      * @param  {Object} param 附加参数
      * @param  {Object} target 当前dom
      */
@@ -742,8 +740,8 @@ var jSpa = (function(window, undefined) {
 
     /**
      * 激活某个页面
-     * @param  {string} id    page id
-     * @param  {object} data    附加的数据，包括urlFrom和urlCur等
+     * @param  {String} id    page id
+     * @param  {Object} data    附加的数据，包括urlFrom和urlCur等
      */
     TinySpa.prototype.activePage = function(id, data) {
         UTIL.removeClass($("[data-defpageid].active"), 'active');
@@ -758,9 +756,6 @@ var jSpa = (function(window, undefined) {
 
     /**
      * 触发hashchange事件，使之开始渲染页面
-     * @return {[type]}   [description]
-     * @author linjianghe
-     * @date   2015-09-16
      */
     TinySpa.prototype.render = function() {
         if (location.hash.indexOf("#") < 0) {
@@ -774,11 +769,9 @@ var jSpa = (function(window, undefined) {
     /**
      * 分发函数
      * @param  {String}   fnName 行数名称
-     * @param  {object}   target DOM对象，不是jQuery对象
+     * @param  {Object}   target DOM对象，不是jQuery对象
      * @param  {String}   event  事件名称
-     * @return {boolean}          true：处理成功，false：处理失败
-     * @author linjianghe
-     * @date   2015-08-05
+     * @return {Boolean}          true：处理成功，false：处理失败
      */
     TinySpa.prototype.invoke = function(fnName, target, event) {
         var names = fnName.split("."),
@@ -798,10 +791,9 @@ var jSpa = (function(window, undefined) {
 
     /**
      * 设置target为active状态，并触发DOM元素中的data-switch事件
-     * @param {object} target     DOM元素jQuery对象
-     * @param {boolean} activeTri 是否触发active事件，如果为ture，则若container元素上定义了data-active就会触发其中的方法
-     * @param  {object} data    附加的数据，包括urlFrom和urlCur等
-     * @author linjianghe
+     * @param {Object} target     DOM元素jQuery对象
+     * @param {Boolean} activeTri 是否触发active事件，如果为ture，则若container元素上定义了data-active就会触发其中的方法
+     * @param  {Object} data    附加的数据，包括urlFrom和urlCur等
      */
     TinySpa.prototype.showActive = function(target, activeTri, data) {
         if (typeof data !== "object") {
@@ -858,17 +850,13 @@ var jSpa = (function(window, undefined) {
 
         /**
          * 定义一个Page类，用于处理页面
-         * @param  {string}   pageName 页面名字，需要唯一
-         * @author linjianghe
-         * @date   2015-08-06
+         * @param  {String}   pageName 页面名字，需要唯一
          */
         function Page(pageName) {
             this.pageName = pageName;
 
             /**
              * 页面初始化时执行的方法，它通过Page.prototype.initPage方法进行覆盖
-             * @author linjianghe
-             * @date   2015-08-06
              */
             this.init = function() {
                 console.debug("[jspa][page.js][this.init] pageName=" + this.pageName); //@debug
@@ -877,8 +865,6 @@ var jSpa = (function(window, undefined) {
 
         /**
          * 设置page的container，一般只需要执行一次即可
-         * @author linjianghe
-         * @date   2015-08-31
          */
         Page.prototype.getContainer = function() {
             console.debug("[jspa][page.js][Page.prototype.getContainer] ", this); //@debug
@@ -889,12 +875,9 @@ var jSpa = (function(window, undefined) {
             return this.container;
         };
 
-
         /**
          * 页面初始化时执行的方法
-         * @param  {function} callback 回调
-         * @author linjianghe
-         * @date   2015-08-06
+         * @param  {Function} callback 回调
          */
         Page.prototype.initPage = function(callback) {
             console.debug("[jspa][page.js][Page.prototype.initPage] ", this); //@debug
@@ -906,9 +889,7 @@ var jSpa = (function(window, undefined) {
 
         /**
          * 页面的switch事件触发函数
-         * @param  {function}   callback 回调处理函数
-         * @author linjianghe
-         * @date   2015-08-06
+         * @param  {Function}   callback 回调处理函数
          */
         Page.prototype.triggerSwitch = function(callback) {
             console.debug("[jspa][page.js][Page.prototype.triggerSwitch] ", this); //@debug
@@ -935,9 +916,7 @@ var jSpa = (function(window, undefined) {
 
         /**
          * 页面的active事件触发函数
-         * @param  {function}   callback 回调处理函数
-         * @author linjianghe
-         * @date   2015-08-06
+         * @param  {Function}   callback 回调处理函数
          */
         Page.prototype.triggerActive = function(callback) {
             console.debug("[jspa][page.js][Page.prototype.triggerActive] ", this); //@debug
@@ -950,9 +929,7 @@ var jSpa = (function(window, undefined) {
 
         /**
          * 获得页面名称
-         * @return {string}   页面名称
-         * @author linjianghe
-         * @date   2015-08-31
+         * @return {String}   页面名称
          */
         Page.prototype.getPageName = function() {
             return this.pageName;
@@ -963,10 +940,8 @@ var jSpa = (function(window, undefined) {
          * 比如?channel=78788#id=index&idno=4，
          *  如果只是hash值，则返回{"id":"index","idno":"4"}
          *  如果还包含search值，则返回{"id":"index","idno":"4","channel":"78788"}
-         * @param  {boolean}   includeSearchParam 是否追加返回location.search中的请求
-         * @return {object}                      结果
-         * @author linjianghe
-         * @date   2015-08-10
+         * @param  {Boolean} includeSearchParam 是否追加返回location.search中的请求
+         * @return {Object} 结果
          */
         Page.prototype.getParam = function(includeSearchParam) {
             console.debug("[jspa][page.js][Page.prototype.getParam] ", includeSearchParam, this); //@debug
@@ -988,11 +963,9 @@ var jSpa = (function(window, undefined) {
             return defaultResult;
         };
 
-
         function _isFunction(fn) {
             return typeof fn === "function";
         }
-
 
         /**
          * 对外提供Page类

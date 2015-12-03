@@ -1,8 +1,8 @@
 /**
  * TinySpa 类定义
  *
- * @author linjianghe
- * @date   2015-11-26
+ * @author helinjiang
+ * @date   2015-11-30
  */
 
 /**
@@ -13,13 +13,13 @@ function TinySpa() {
 
     /**
      * 默认的页面ID，如果没有#id这样的参数的话
-     * @type {string}
+     * @type {String}
      */
     this.pageDefaultId = 'index';
 
     /**
      * 出错的页面ID，如果有#id=xxx，但xxx在页面中又没定义的话
-     * @type {string}
+     * @type {String}
      */
     this.page404Id = this.pageDefaultId;
 
@@ -49,14 +49,14 @@ function TinySpa() {
 
     /**
      * 加载前调用的方法
-     * @type {function}
+     * @type {Function}
      */
     this.beforeLoad = function () {
     };
 
     /**
      * 加载后调用的方法
-     * @type {function}
+     * @type {Function}
      */
     this.afterLoad = function () {
     };
@@ -125,7 +125,7 @@ TinySpa.prototype.getCheckedId = function (pageId) {
 
 /**
  * 设置默认页面
- * @param  {string}   pageId 默认页面ID
+ * @param  {String}   pageId 默认页面ID
  */
 TinySpa.prototype.setPageDefaultId = function (pageId) {
     if (typeof pageId !== "string") {
@@ -271,9 +271,8 @@ TinySpa.prototype.hideLoading = function (target) {
 
 /**
  * 加载并渲染某页面中的元素
- * @param  {string} id    page id
- * @param  {object} data    附加的数据，包括urlFrom和urlCur等
- * @author linjianghe
+ * @param  {String} id    page id
+ * @param  {Object} data    附加的数据，包括urlFrom和urlCur等
  */
 TinySpa.prototype.loadDom = function (id, data) {
     id = this.getCheckedId(id);
@@ -297,11 +296,10 @@ TinySpa.prototype.loadDom = function (id, data) {
 
 /**
  * 设置container中的html
- * @param {object} container     DOM元素
- * @param {string} html          html代码
- * @param {boolean} append       是否为追加，如果为true，则container中的内容会先被销毁，默认为false，即覆盖
- * @param {boolean} triggerActive 是否触发active事件，如果为ture，则若container元素上定义了data-active就会触发其中的方法，默认不触发
- * @author linjianghe
+ * @param {Object} container     DOM元素
+ * @param {String} html          html代码
+ * @param {Boolean} append       是否为追加，如果为true，则container中的内容会先被销毁，默认为false，即覆盖
+ * @param {Boolean} triggerActive 是否触发active事件，如果为ture，则若container元素上定义了data-active就会触发其中的方法，默认不触发
  */
 TinySpa.prototype.setHtml = function (container, html, append, triggerActive) {
     var tinyspa = this;
@@ -346,7 +344,7 @@ TinySpa.prototype.setHtml = function (container, html, append, triggerActive) {
 
 /**
  * 获得当前的页面ID，即page id
- * @return {string} 页面ID
+ * @return {String} 页面ID
  */
 TinySpa.prototype.getCurPageId = function () {
     // 合法的hash值格式为#index&x=1,因此只要获取#之后的那个值即可
@@ -358,7 +356,7 @@ TinySpa.prototype.getCurPageId = function () {
 
 /**
  * 获得URL中参数对象
- * @return {object} URL中参数对象
+ * @return {Object} URL中参数对象
  */
 TinySpa.prototype.getHashKV = function () {
     var hash = decodeURIComponent(location.hash);
@@ -376,7 +374,7 @@ TinySpa.prototype.getHashKV = function () {
 
 /**
  * 页面切换都指定page页面，同时传递参数param
- * @param  {string} pageId    page id
+ * @param  {String} pageId    page id
  * @param  {Object} param 附加参数
  * @param  {Object} target 当前dom
  */
@@ -437,8 +435,8 @@ TinySpa.prototype.goToPage = function (navTo, param, target) {
 
 /**
  * 激活某个页面
- * @param  {string} id    page id
- * @param  {object} data    附加的数据，包括urlFrom和urlCur等
+ * @param  {String} id    page id
+ * @param  {Object} data    附加的数据，包括urlFrom和urlCur等
  */
 TinySpa.prototype.activePage = function (id, data) {
     UTIL.removeClass($("[data-defpageid].active"), 'active');
@@ -453,9 +451,6 @@ TinySpa.prototype.activePage = function (id, data) {
 
 /**
  * 触发hashchange事件，使之开始渲染页面
- * @return {[type]}   [description]
- * @author linjianghe
- * @date   2015-09-16
  */
 TinySpa.prototype.render = function () {
     if (location.hash.indexOf("#") < 0) {
@@ -469,11 +464,9 @@ TinySpa.prototype.render = function () {
 /**
  * 分发函数
  * @param  {String}   fnName 行数名称
- * @param  {object}   target DOM对象，不是jQuery对象
+ * @param  {Object}   target DOM对象，不是jQuery对象
  * @param  {String}   event  事件名称
- * @return {boolean}          true：处理成功，false：处理失败
- * @author linjianghe
- * @date   2015-08-05
+ * @return {Boolean}          true：处理成功，false：处理失败
  */
 TinySpa.prototype.invoke = function (fnName, target, event) {
     var names = fnName.split("."),
@@ -493,10 +486,9 @@ TinySpa.prototype.invoke = function (fnName, target, event) {
 
 /**
  * 设置target为active状态，并触发DOM元素中的data-switch事件
- * @param {object} target     DOM元素jQuery对象
- * @param {boolean} activeTri 是否触发active事件，如果为ture，则若container元素上定义了data-active就会触发其中的方法
- * @param  {object} data    附加的数据，包括urlFrom和urlCur等
- * @author linjianghe
+ * @param {Object} target     DOM元素jQuery对象
+ * @param {Boolean} activeTri 是否触发active事件，如果为ture，则若container元素上定义了data-active就会触发其中的方法
+ * @param  {Object} data    附加的数据，包括urlFrom和urlCur等
  */
 TinySpa.prototype.showActive = function (target, activeTri, data) {
     if (typeof data !== "object") {

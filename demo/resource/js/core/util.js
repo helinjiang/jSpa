@@ -1,10 +1,10 @@
 /**
- * 公共处理函数,如果是业务处理相关的，则请放置在action.js中
+ * 公共处理函数，为了更灵活，我们将与jSpa.js的相关交互也在此定义
  *
- * @author linjianghe
- * @date   2015-07-16
+ * @author helinjiang
+ * @date   2015-11-30
  */
-window.UTIL = (function() {
+window.UTIL = (function (jSpa, undefined) {
 
     /**
      * 重新加载页面，由于是单页面应用，有一些数据缓存，一般不使用这种方法来重加载，而是自定义函数重加载数据。
@@ -52,11 +52,11 @@ window.UTIL = (function() {
             //出错的页面ID，如果有#id=xxx，但xxx在页面中又没定义的话
             page404Id: 'p404',
 
-            beforeLoad: function(target) {
+            beforeLoad: function (target) {
                 console.log('beforeLoad: ', target);
             },
 
-            afterLoad: function(target) {
+            afterLoad: function (target) {
                 console.log('afterLoad: ', target);
             }
         });
@@ -81,4 +81,4 @@ window.UTIL = (function() {
 
     return exports;
 
-})();
+})(window.jSpa);

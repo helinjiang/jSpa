@@ -4,33 +4,27 @@
  * @author helinjiang
  * @date   2015-11-30
  */
-var Page = (function(TINYSPA) {
+var Page = (function (TINYSPA) {
 
     /**
      * 定义一个Page类，用于处理页面
-     * @param  {string}   pageName 页面名字，需要唯一
-     * @author linjianghe
-     * @date   2015-08-06
+     * @param  {String}   pageName 页面名字，需要唯一
      */
     function Page(pageName) {
         this.pageName = pageName;
 
         /**
          * 页面初始化时执行的方法，它通过Page.prototype.initPage方法进行覆盖
-         * @author linjianghe
-         * @date   2015-08-06
          */
-        this.init = function() {
+        this.init = function () {
             console.debug("[jspa][page.js][this.init] pageName=" + this.pageName); //@debug
         };
     }
 
     /**
      * 设置page的container，一般只需要执行一次即可
-     * @author linjianghe
-     * @date   2015-08-31
      */
-    Page.prototype.getContainer = function() {
+    Page.prototype.getContainer = function () {
         console.debug("[jspa][page.js][Page.prototype.getContainer] ", this); //@debug
 
         if (!this.container) {
@@ -39,14 +33,11 @@ var Page = (function(TINYSPA) {
         return this.container;
     };
 
-
     /**
      * 页面初始化时执行的方法
-     * @param  {function} callback 回调
-     * @author linjianghe
-     * @date   2015-08-06
+     * @param  {Function} callback 回调
      */
-    Page.prototype.initPage = function(callback) {
+    Page.prototype.initPage = function (callback) {
         console.debug("[jspa][page.js][Page.prototype.initPage] ", this); //@debug
 
         if (_isFunction(callback)) {
@@ -56,11 +47,9 @@ var Page = (function(TINYSPA) {
 
     /**
      * 页面的switch事件触发函数
-     * @param  {function}   callback 回调处理函数
-     * @author linjianghe
-     * @date   2015-08-06
+     * @param  {Function}   callback 回调处理函数
      */
-    Page.prototype.triggerSwitch = function(callback) {
+    Page.prototype.triggerSwitch = function (callback) {
         console.debug("[jspa][page.js][Page.prototype.triggerSwitch] ", this); //@debug
         var curPageContainer = this.getContainer();
 
@@ -77,7 +66,7 @@ var Page = (function(TINYSPA) {
         //切换函数，此处要延时执行，是以防在init()方法中进行了dom更新，要留事件让dom更新完成
         if (_isFunction(callback)) {
             var that = this;
-            setTimeout(function() {
+            setTimeout(function () {
                 callback.call(that);
             }, 10);
         }
@@ -85,11 +74,9 @@ var Page = (function(TINYSPA) {
 
     /**
      * 页面的active事件触发函数
-     * @param  {function}   callback 回调处理函数
-     * @author linjianghe
-     * @date   2015-08-06
+     * @param  {Function}   callback 回调处理函数
      */
-    Page.prototype.triggerActive = function(callback) {
+    Page.prototype.triggerActive = function (callback) {
         console.debug("[jspa][page.js][Page.prototype.triggerActive] ", this); //@debug
 
         //切换函数
@@ -100,11 +87,9 @@ var Page = (function(TINYSPA) {
 
     /**
      * 获得页面名称
-     * @return {string}   页面名称
-     * @author linjianghe
-     * @date   2015-08-31
+     * @return {String}   页面名称
      */
-    Page.prototype.getPageName = function() {
+    Page.prototype.getPageName = function () {
         return this.pageName;
     };
 
@@ -113,12 +98,10 @@ var Page = (function(TINYSPA) {
      * 比如?channel=78788#id=index&idno=4，
      *  如果只是hash值，则返回{"id":"index","idno":"4"}
      *  如果还包含search值，则返回{"id":"index","idno":"4","channel":"78788"}
-     * @param  {boolean}   includeSearchParam 是否追加返回location.search中的请求
-     * @return {object}                      结果
-     * @author linjianghe
-     * @date   2015-08-10
+     * @param  {Boolean} includeSearchParam 是否追加返回location.search中的请求
+     * @return {Object} 结果
      */
-    Page.prototype.getParam = function(includeSearchParam) {
+    Page.prototype.getParam = function (includeSearchParam) {
         console.debug("[jspa][page.js][Page.prototype.getParam] ", includeSearchParam, this); //@debug
         var defaultResult = TINYSPA.getHashKV();
         if (!includeSearchParam) {
@@ -138,11 +121,9 @@ var Page = (function(TINYSPA) {
         return defaultResult;
     };
 
-
     function _isFunction(fn) {
         return typeof fn === "function";
     }
-
 
     /**
      * 对外提供Page类
