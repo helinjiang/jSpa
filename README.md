@@ -9,7 +9,7 @@
 
 ## 使用说明
 ### JS文件
-jSpa框架不依赖任何其他的框架，它是属于轻量级的框架。但是为了在手机上的体验，我们推荐再引入 FastClick框架（[https://github.com/ftlabs/fastclick](https://github.com/ftlabs/fastclick)）。
+jSpa框架不依赖任何其他的框架，它是属于轻量级的框架。但是为了在手机上的体验，在必要的时候，我们推荐再引入 FastClick框架（[https://github.com/ftlabs/fastclick](https://github.com/ftlabs/fastclick)）。
 
 为此我们提供两个版本，一个版本为jspa-fastclick.js，已经将其打包在一起了；另外一个版本为单独的jspa.js，此时可以自行引入 FastClick ，但要注意将 FastClick 在 jspa.js之前引入。当然，如果您不乐意引入 FastClick 或者引入了其他的框架， jspa.js 也不会报错。
 
